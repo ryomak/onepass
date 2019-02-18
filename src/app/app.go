@@ -2,6 +2,7 @@ package app
 
 import(
   "github.com/ryomak/onepass/src/display"
+  "github.com/ryomak/onepass/src/util"
   termbox"github.com/nsf/termbox-go"
   "log"
 )
@@ -38,6 +39,7 @@ func Run(){
       case termbox.KeyCtrlC:
         break mainloop
       case termbox.KeyCtrlI:
+        util.Mode = util.CREATEMODE
         insertLoop()
       }
     }

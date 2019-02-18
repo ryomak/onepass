@@ -2,6 +2,8 @@ package display
 import(
   termbox"github.com/nsf/termbox-go"
   "github.com/ryomak/onepass/src/model"
+  "github.com/ryomak/onepass/src/util"
+  "github.com/mattn/go-runewidth"
 )
 var TerminalWidth,TerminalHeight int = 0,0
 var panes = map[string]Pane{}
@@ -19,7 +21,10 @@ func DisplayMainFrame(){
   writeVerticalLine(panes["AccountListPane"].MaxX(),0,LineOption{
     Length:panes["ModePane"].Y(),
   })
+  //下のライン
   writeLine(0,panes["ModePane"].Y(),LineOption{})
+  //MODE
+  DisplayMode(util.EchoMode())
   DisplayAccount([]model.Account{
     model.Account{Name:"ryoma"} ,
     model.Account{Name:"ryoma"} ,
@@ -39,5 +44,12 @@ func DisplayAccount(acc []model.Account){
   }
 }
 
+func DisplayMode(mode string){
+  writeStr(mode,SentenceOption{
+    X:panes["ModePane"].MaxX()-runewidth.StringWidth(mode)-1,
+    Y:panes["ModePane"].Y()+1,
+    MaxX:panes["ModePane"].MaxX(),
+  })
+}
 
 
