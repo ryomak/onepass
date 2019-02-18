@@ -25,21 +25,23 @@ func Run(){
     log.Fatal(err)
   }
   defer termbox.Close()
-  display.DisplayFrame()
+  display.DisplayMainFrame()
   mainloop:
   for{
     switch ev := termbox.PollEvent(); ev.Type {
     case termbox.EventResize:
-      display.DisplayFrame()
+      display.DisplayMainFrame()
     case termbox.EventKey:
       switch ev.Key {
       case termbox.KeyEsc:
         break mainloop
       case termbox.KeyCtrlC:
         break mainloop
+      case termbox.KeyCtrlI:
+        insertLoop()
       }
     }
-    display.DisplayFrame()
+    display.DisplayMainFrame()
   }
 }
 

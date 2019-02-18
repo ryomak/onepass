@@ -2,6 +2,7 @@ package display
 
 import(
   termbox"github.com/nsf/termbox-go"
+  "github.com/mattn/go-runewidth"
 )
 
 type LineOption struct{
@@ -47,7 +48,7 @@ func writeVerticalLine(x,y int , op LineOption){
   height := TerminalHeight
   if !op.Reverse {
     if op.Length != 0 && height > (y+op.Length){
-      height = x+op.Length
+      height = y+op.Length
     }
     for row :=y ;row < height;row++{
       termbox.SetCell(x, row, '|', op.CharColor, op.BGColor)
@@ -66,9 +67,10 @@ func writeVerticalLine(x,y int , op LineOption){
 }
 
 func writeStr(str string ,op SentenceOption){
-	for col := 0; col < len(str); col++ {
-    if(op.X+col) > op.MaxX{return}
-		char := rune(str[col])
-		termbox.SetCell(op.X+col, op.Y, char, op.CharColor, op.BGColor)
+  runes := []rune(str)
+  for _,r := range runes{
+		termbox.SetCell(op.X, op.Y, r, op.CharColor, op.BGColor)
+    op.X += runewidth.RuneWidth(r)
+    if(op.X) > op.MaxX{return}
 	}
 }

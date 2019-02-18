@@ -9,12 +9,17 @@ var panes = map[string]Pane{}
 func init(){
 	termbox.Clear(termbox.ColorDefault, termbox.ColorDefault)
   panes["AccountListPane"] = new(AccountListPane)
+  panes["ModePane"] = new(ModePane)
 }
 
-func DisplayFrame(){
+func DisplayMainFrame(){
   TerminalWidth ,TerminalHeight = termbox.Size()
 	termbox.Clear(termbox.ColorDefault, termbox.ColorDefault)
-  writeVerticalLine(panes["AccountListPane"].MaxX(),0,LineOption{})
+  //縦のライン
+  writeVerticalLine(panes["AccountListPane"].MaxX(),0,LineOption{
+    Length:panes["ModePane"].Y(),
+  })
+  writeLine(0,panes["ModePane"].Y(),LineOption{})
   DisplayAccount([]model.Account{
     model.Account{Name:"ryoma"} ,
     model.Account{Name:"ryoma"} ,
