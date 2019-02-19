@@ -6,15 +6,32 @@ import(
   "github.com/ryomak/onepass/src/util"
 )
 
-func insertLoop(){
+func control(keyCh chan termbox.Key){
+  mainloop:
+  for{
+    display.DisplayMainFrame()
+    select{
+    case key := <-keyCh:
+      switch key {
+      case termbox.KeyEsc:
+        break mainloop
+      case termbox.KeyCtrlC:
+        break mainloop
+      case termbox.KeyCtrlI:
+        util.Mode = util.CREATEMODE
+        insertLoop(keyCh)
+      }
+    }
+  }
+}
+
+func insertLoop(keyCh chan termbox.Key){
   insertloop:
   for{
     display.DisplayMainFrame()
-    switch ev := termbox.PollEvent(); ev.Type {
-    case termbox.EventResize:
-      display.DisplayMainFrame()
-    case termbox.EventKey:
-      switch ev.Key {
+    select{
+    case key := <-keyCh:
+      switch key {
       case termbox.KeyEsc:
         util.Mode = util.NORMALMODE
         break insertloop
