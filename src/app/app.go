@@ -25,6 +25,7 @@ func Run(){
   }
   defer termbox.Close()
   keyEventCh := make(chan termbox.Key)
-  go keyEventLoop(keyEventCh)
-  control(keyEventCh)
+  charEventCh := make(chan rune)
+  go keyEventLoop(keyEventCh,charEventCh)
+  control(keyEventCh,charEventCh)
 }

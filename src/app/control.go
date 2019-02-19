@@ -4,12 +4,13 @@ import(
   "github.com/nsf/termbox-go"
   "github.com/ryomak/onepass/src/display"
   "github.com/ryomak/onepass/src/util"
+  "log"
 )
 
-func control(keyCh chan termbox.Key){
+func control(keyCh chan termbox.Key,charCh chan rune){
   mainloop:
   for{
-    display.DisplayMainFrame()
+    display.DisplayAll()
     select{
     case key := <-keyCh:
       switch key {
@@ -21,6 +22,8 @@ func control(keyCh chan termbox.Key){
         util.Mode = util.CREATEMODE
         insertLoop(keyCh)
       }
+    case chr := <-charCh:
+        log.Println(chr)
     }
   }
 }
@@ -28,7 +31,7 @@ func control(keyCh chan termbox.Key){
 func insertLoop(keyCh chan termbox.Key){
   insertloop:
   for{
-    display.DisplayMainFrame()
+    display.DisplayAll()
     select{
     case key := <-keyCh:
       switch key {

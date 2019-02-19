@@ -14,6 +14,12 @@ func init(){
   panes["ModePane"] = new(ModePane)
 }
 
+func DisplayAll(){
+  DisplayMainFrame()
+  DisplayMode(util.EchoMode())
+  termbox.Flush()
+}
+
 func DisplayMainFrame(){
   TerminalWidth ,TerminalHeight = termbox.Size()
 	termbox.Clear(termbox.ColorDefault, termbox.ColorDefault)
@@ -23,15 +29,6 @@ func DisplayMainFrame(){
   })
   //下のライン
   writeLine(0,panes["ModePane"].Y(),LineOption{})
-  //MODE
-  DisplayMode(util.EchoMode())
-  DisplayAccount([]model.Account{
-    model.Account{Name:"ryoma"} ,
-    model.Account{Name:"ryoma"} ,
-    model.Account{Name:"ryoma"} ,
-    model.Account{Name:"ryoma"} ,
-  })
-	termbox.Flush()
 }
 
 func DisplayAccount(acc []model.Account){
